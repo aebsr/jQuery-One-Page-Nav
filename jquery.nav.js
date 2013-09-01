@@ -36,6 +36,7 @@
 	// the plugin prototype
 	OnePageNav.prototype = {
 		defaults: {
+			attr: 'href',
 			currentClass: 'current',
 			changeHash: false,
 			easing: 'swing',
@@ -106,7 +107,8 @@
 		},
 		
 		getHash: function($link) {
-			return $link.attr('href').split('#')[1];
+			var self = this;
+			return $link.attr( self.config.attr ).split('#')[1];
 		},
 		
 		getPositions: function() {
@@ -185,13 +187,14 @@
 		},
 		
 		scrollChange: function() {
+			var self = this;
 			var windowTop = this.$win.scrollTop();
 			var position = this.getSection(windowTop);
 			var $parent;
 			
 			//If the position is set
 			if(position !== null) {
-				$parent = this.$elem.find('a[href$="#' + position + '"]').parent();
+				$parent = this.$elem.find('a[' + self.config.attr + '$="' + position + '"]').parent();
 				
 				//If it's not already the current section
 				if(!$parent.hasClass(this.config.currentClass)) {
